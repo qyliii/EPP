@@ -24,12 +24,16 @@ def main():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     ### 1. Load Input Data and Label Y
-    ag_path ="/data/databases/epitope_prediction/sab/traindata_esm_ag_pdbj_0621.pt"
-    ab_path = "/data/databases/epitope_prediction/sab/traindata_esm_ab_pdbj_0621.pt"
-    label_path = '/data/databases/epitope_prediction/sab/tensor_label_y_0621.pt'
+    ag_path ="/data/traindata_esm_ag.pt"
+    ab_path = "/data/traindata_esm_ab.pt"
+    label_path = '/data/tensor_label_y.pt'
 
-    X_train_ag, X_val_ag, X_train_ab, X_val_ab, y_train, y_val = load_data(ag_path, ab_path, label_path, device,test_size=0.1)
-    train_data_size = X_train_ag.shape
+    train_data_ag = torch.load(ag_path)
+    train_data_ab = torch.load(ab_path)
+    train_data_y = torch.load(label_path)
+
+    # Partition data set
+    X_train_ag, X_val_ag, X_train_ab, X_val_ab, y_train, y_val = train_test_split(train_data_ag, train_data_ab, train_data_y, test_size=test_size, random_state=42)
     print("Data read successfully.")
 
     ### 2. Define Model
