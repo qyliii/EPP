@@ -12,7 +12,7 @@ In this study, we introduce **EPP (Epitope-Paratope Predictor)**, a novel approa
 ## Installation
 Clone the repository and install the dependencies:
 ```bash
-git clone https://github.com/your-repo/EPP.git
+git clone https://github.com/qyliii/EPP.git
 cd EPP
 conda env create -f environment.yml
 conda activate epp
@@ -35,7 +35,7 @@ If you use EPP in your research, please cite:
 @article{,
   title={Enhanced Prediction of Antigen and Antibody Binding Interface Using ESM-2 and Bi-LSTM},
   author={Qianying Li, Yanmin Zhao, Mahendra D. Chordia, Xiuming Xia, Bo Zhang, Heping Zheng},
-  journal={},
+  journal={Human Immunology},
   year={2025}
 }
 ```
