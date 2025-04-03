@@ -42,8 +42,10 @@ def main():
     dropout_rate = Config.dropout
     num_layers= Config.layer
 
-     
-    model = BiLSTMMerge(input_size, hidden_size, num_layers, dropout_rate).to(device)
+    # model = BiLSTMMerge(input_size, hidden_size, num_layers, dropout_rate).to(device)
+    model_ag = BiLSTM(input_size, hidden_size, num_layers, dropout_rate).to(device)
+    model_ab = BiLSTM(input_size, hidden_size, num_layers, dropout_rate).to(device)
+    
     # Define loss functions and optimizers
     pos_weight = torch.tensor([Config.pos_weight]).to(device)
     criterion = nn.BCEWithLogitsLoss(pos_weight=pos_weight)
@@ -94,8 +96,13 @@ def train_model(train_loader, val_loader, model, optimizer, criterion, num_epoch
             X_ab = X_ab.to(device)
             y_batch = y_batch.to(device)
             optimizer.zero_grad()
-
-            result = model(X_ag, X_ab)
+            
+            # result = model(X_ag, X_ab)
+            
+            output_ag = model_ag(X_ag)
+            output_ab = model_ab(X_ab)
+            result = torch.matmul(output_ag, output_ab.transpose(0, 1))
+            
             result_prob = torch.sigmoid(result)
             loss = criterion(result, y_batch)
             loss.backward()
@@ -132,7 +139,10 @@ def train_model(train_loader, val_loader, model, optimizer, criterion, num_epoch
                 X_ag_val = X_ag_val.to(device)
                 X_ab_val = X_ab_val.to(device)
                 y_val_batch = y_val_batch.to(device)
-                result_val = model(X_ag_val, X_ab_val)
+                # result_val = model(X_ag_val, X_ab_val)
+                output_ag_val = model_ag(X_ag_val)
+                output_ab_val = model_ab(X_ab_val)
+                result_val = torch.matmul(output_ag_val, output_ab_val.transpose(0, 1))
                 result_val_prob = torch.sigmoid(result_val)
 
                 # Converts the output result to a probability value  -for pr curve
