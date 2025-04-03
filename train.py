@@ -19,14 +19,14 @@ class Config:
     threshold = 0.5
 
 def main():
-    '''Training the final model'''
+    '''Training the final EPP model'''
     ### 0. Check device
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     ### 1. Load Input Data and Label Y
-    ag_path ="/data/traindata_esm_ag.pt"
-    ab_path = "/data/traindata_esm_ab.pt"
-    label_path = '/data/tensor_label_y.pt'
+    ag_path ="./data/traindata_esm_ag.pt"
+    ab_path = "./data/traindata_esm_ab.pt"
+    label_path = './data/tensor_label_y.pt'
 
     train_data_ag = torch.load(ag_path)
     train_data_ab = torch.load(ab_path)
@@ -162,10 +162,7 @@ def train_model(train_loader, val_loader, model, optimizer, criterion, num_epoch
         if epoch % 10 == 0:
             print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())), epoch, 'loss:',train_losses[-1],'  acc:',train_accuracies[-1])
        
-    y_scores = np.vstack(y_scores_epoch)
-    y_true = np.vstack(y_true_epoch)
-
-    return model, train_losses, val_losses, train_accuracies, val_accuracies, y_scores, y_true,train_x_accuracies,val_x_accuracies,train_y_accuracies,val_y_accuracies
+    return model
 
 if __name__ == "__main__":
     main()
