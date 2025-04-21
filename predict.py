@@ -41,9 +41,9 @@ def main():
 
     # 3. predict
     model1 = torch.load(
-        'model_ag.pth')
+        './model/model_ag.pth')
     model2 = torch.load(
-        'model_ab.pth')
+        './model/model_ab.pth')
     model1.eval()
     model2.eval()  # set eval mode
 
